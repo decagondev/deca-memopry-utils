@@ -220,7 +220,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Changelog
 
-### [1.1.0] - 2024-11-06
+### [1.1.1] - 2024-11-06
 #### Added
 - SharedPtr implementation with reference counting
 - WeakPtr implementation for weak references
