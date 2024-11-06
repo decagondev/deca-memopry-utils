@@ -83,7 +83,7 @@ deca-memory-utils/
 ├── .npmignore
 ├── package.json
 ├── tsconfig.json
-├── jest.config.js
+├── jest.config.cjs
 ├── README.md
 ├── LICENSE
 ├── src/
