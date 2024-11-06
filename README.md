@@ -133,7 +133,7 @@ The project uses Jest with ts-jest for testing. The setup includes:
 To run tests:
 ```bash
 npm test
-``
+```
 
 ## Contributing
 
