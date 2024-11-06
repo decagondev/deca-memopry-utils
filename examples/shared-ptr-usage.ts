@@ -13,18 +13,18 @@ console.log('Reference count after sharing:', simpleShared.useCount());
 // Example 2: SharedPtr with custom destructor
 console.log('\n=== SharedPtr with Custom Destructor ===');
 class DatabaseConnection {
-    constructor(public id: string) {
-        console.log(`Database connection ${id} established`);
-    }
+  constructor(public id: string) {
+    console.log(`Database connection ${id} established`);
+  }
 }
 
 const connectionDestructor = (conn: DatabaseConnection) => {
-    console.log(`Closing database connection ${conn.id}`);
+  console.log(`Closing database connection ${conn.id}`);
 };
 
 const dbConnection = new SharedPtr(
-    new DatabaseConnection("conn-1"),
-    connectionDestructor
+  new DatabaseConnection("conn-1"),
+  connectionDestructor
 );
 
 // Share the connection
@@ -38,7 +38,7 @@ console.log('Connections after first reset:', sharedConnection.useCount());
 // Example 3: WeakPtr usage
 console.log('\n=== WeakPtr Usage ===');
 class CacheEntry {
-    constructor(public data: string) {}
+  constructor(public data: string) {}
 }
 
 // Create a cache entry with shared ownership
@@ -49,13 +49,13 @@ const weakCache = new WeakPtr(cacheEntry);
 
 // Function to check and display cache status
 const checkCache = () => {
-    console.log('Is cache expired?', weakCache.expired());
-    const lockedCache = weakCache.lock();
-    if (lockedCache) {
-        console.log('Cache data:', lockedCache.get()?.data);
-    } else {
-        console.log('Cache entry no longer exists');
-    }
+  console.log('Is cache expired?', weakCache.expired());
+  const lockedCache = weakCache.lock();
+  if (lockedCache) {
+    console.log('Cache data:', lockedCache.get()?.data);
+  } else {
+    console.log('Cache entry no longer exists');
+  }
 };
 
 // Check initial state
@@ -70,44 +70,44 @@ checkCache();
 // Example 4: Complex object lifecycle
 console.log('\n=== Complex Object Lifecycle ===');
 class Resource {
-    constructor(public name: string, public data: number[]) {
-        console.log(`Resource ${name} created`);
-    }
+  constructor(public name: string, public data: number[]) {
+    console.log(`Resource ${name} created`);
+  }
 }
 
 class ResourceManager {
-    private resources: Map<string, SharedPtr<Resource>> = new Map();
-    private weakRefs: Map<string, WeakPtr<Resource>> = new Map();
+  private resources: Map<string, SharedPtr<Resource>> = new Map();
+  private weakRefs: Map<string, WeakPtr<Resource>> = new Map();
 
-    addResource(name: string, data: number[]): void {
-        const resource = new SharedPtr(
-            new Resource(name, data),
-            (r) => console.log(`Resource ${r.name} destroyed`)
-        );
-        this.resources.set(name, resource);
-        this.weakRefs.set(name, new WeakPtr(resource));
-    }
+  addResource(name: string, data: number[]): void {
+    const resource = new SharedPtr(
+      new Resource(name, data),
+      (r) => console.log(`Resource ${r.name} destroyed`)
+    );
+    this.resources.set(name, resource);
+    this.weakRefs.set(name, new WeakPtr(resource));
+  }
 
-    getResource(name: string): SharedPtr<Resource> | null {
-        const weakRef = this.weakRefs.get(name);
-        if (weakRef) {
-            return weakRef.lock();
-        }
-        return null;
+  getResource(name: string): SharedPtr<Resource> | null {
+    const weakRef = this.weakRefs.get(name);
+    if (weakRef) {
+      return weakRef.lock();
     }
+    return null;
+  }
 
-    releaseResource(name: string): void {
-        const resource = this.resources.get(name);
-        if (resource) {
-            resource.reset();
-            this.resources.delete(name);
-        }
+  releaseResource(name: string): void {
+    const resource = this.resources.get(name);
+    if (resource) {
+      resource.reset();
+      this.resources.delete(name);
     }
+  }
 
-    isResourceValid(name: string): boolean {
-        const weakRef = this.weakRefs.get(name);
-        return weakRef ? !weakRef.expired() : false;
-    }
+  isResourceValid(name: string): boolean {
+    const weakRef = this.weakRefs.get(name);
+    return weakRef ? !weakRef.expired() : false;
+  }
 }
 
 // Demonstrate ResourceManager usage
@@ -152,8 +152,8 @@ ptr2.reset();
 // Example 6: Circular references and cleanup
 console.log('\n=== Circular References ===');
 class Node {
-    constructor(public value: string) {}
-    public next: SharedPtr<Node> | null = null;
+  constructor(public value: string) {}
+  public next: SharedPtr<Node> | null = null;
 }
 
 // Create nodes with shared ownership
